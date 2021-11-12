@@ -1,0 +1,13 @@
+{
+  "name": "pokeplay",
+  "version": "1.0.0",
+  "description": "A way to play pokemon with discord",
+  "main": "bot.js",
+  "repository": "https://github.com/Lesaloon/pokeplay",
+  "author": "Lesaloon <guilliancarville@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "discord.js": "^13.3.1"
+  }
+}
