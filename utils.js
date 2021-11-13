@@ -15,6 +15,23 @@ const Emojis = {
     NO: '⛔:',
     NOTEPAD: '🗒️'
 };
+ 
+const Controler = {
+    
+    
+   
+    LEFT: "⬅️",
+    UP : "⬆️",
+    DOWN: "⬇️",
+    RIGHT: "➡️",
+    
+    
+    START : "⏯️",
+    SELECT : "🆗",
+
+    A : "🇦",
+    B : "🇧",
+}
 
 const Colors = {
     WHITE: 16777215,
@@ -32,5 +49,6 @@ const Colors = {
 
 module.exports =  {
     Emojis: Emojis,
-    Colors: Colors
+    Colors: Colors,
+    Controler: Controler
 }
