@@ -17,20 +17,15 @@ const Emojis = {
 };
  
 const Controler = {
-    
-    
-   
     LEFT: "⬅️",
     UP : "⬆️",
     DOWN: "⬇️",
     RIGHT: "➡️",
-    
-    
-    START : "⏯️",
-    SELECT : "🆗",
-
+    SELECT: "🆗",
+    START: "⏯️",
     A : "🇦",
     B : "🇧",
+    SKIP : "🔜"
 }
 
 const Colors = {
@@ -47,8 +42,78 @@ const Colors = {
     
 };
 
+
+function cobRes(iBuf, width, cb) {
+    const stream = require("stream");
+    const PNG = require("pngjs").PNG
+
+    b2s(iBuf)
+    .pipe(new PNG({
+        filterType: -1
+    }))
+    .on('parsed', function() {
+
+        var nw = width;
+        var nh = nw *  this.height /this.width;
+        var f = resize(this, nw, nh);
+
+        sbuff(f.pack(), b=>{
+            cb(b);
+        })
+    })
+
+
+    function resize(srcPng, width, height) {
+        var rez = new PNG({
+            width:width,
+            height:height
+        });
+        for(var i = 0; i < width; i++) {
+            var tx = i / width,
+                ssx = Math.floor(tx * srcPng.width);
+            for(var j = 0; j < height; j++) {
+                var ty = j / height,
+                    ssy = Math.floor(ty * srcPng.height);
+                var indexO = (ssx + srcPng.width * ssy) * 4,
+                    indexC = (i + width * j) * 4,
+                    rgbaO = [
+                        srcPng.data[indexO  ],
+                        srcPng.data[indexO+1],
+                        srcPng.data[indexO+2],
+                        srcPng.data[indexO+3]
+                    ]
+                rez.data[indexC  ] = rgbaO[0];
+                rez.data[indexC+1] = rgbaO[1];
+                rez.data[indexC+2] = rgbaO[2];
+                rez.data[indexC+3] = rgbaO[3];
+            }
+        }
+        return rez;
+    }
+
+    function b2s(b) {
+        var str = new stream.Readable();
+        str.push(b);
+        str.push(null);
+        return str;
+    }
+    function sbuff(stream, cb) {
+        var bufs = []
+        var pk = stream;
+        pk.on('data', (d)=> {
+            bufs.push(d);
+
+        })
+        pk.on('end', () => {
+            var buff = Buffer.concat(bufs);
+            cb(buff);
+        });
+    }
+}
+
 module.exports =  {
     Emojis: Emojis,
     Colors: Colors,
-    Controler: Controler
+    Controler: Controler,
+    resizer : cobRes
 }
