@@ -1,2 +1,2 @@
 # pokeplay
-a pokemon player
+a pokemon player for discord
